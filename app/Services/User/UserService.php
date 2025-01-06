@@ -2,7 +2,9 @@
 namespace App\Services\User;
 use App\Models\User;
 use App\Enums\User\UserStatus;
+use App\Filters\User\FilterUser;
 use Spatie\Permission\Models\Role;
+use App\Filters\Role\FilterUserRole;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules\Enum;
 use Spatie\QueryBuilder\QueryBuilder;
@@ -22,8 +24,12 @@ class UserService
    public function all()
    {
      $users=QueryBuilder::for(User::class)
-     ->AllowedFilters(['name','email'])
-     ->paginate(10);
+     ->AllowedFilters([
+        AllowedFilter::custom('search', new FilterUser()),
+        AllowedFilter::custom('role', new FilterUserRole()),
+        AllowedFilter::exact('status'),
+     ])
+     ->paginate();
      return $users;
    }
    public function create(array $data)
