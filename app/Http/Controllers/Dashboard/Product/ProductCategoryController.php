@@ -19,7 +19,7 @@ class ProductCategoryController extends Controller
 
     public function __construct(ProductCategoryService $productCategoryService)
     {
-        // $this->middleware('auth:api');
+        $this->middleware('auth:api');
         $this->productCategoryService = $productCategoryService;
     }
 
@@ -30,8 +30,9 @@ class ProductCategoryController extends Controller
     {
         $productCategorys = $this->productCategoryService->all();
 
-        return response()->json([
-            "data"=>$productCategorys], 200);
+        return response()->json(
+            new AllProductCategoryCollection(PaginateCollection::paginate($productCategorys, $request->pageSize?$request->pageSize:10))
+        , 200);
 
     }
 
@@ -69,9 +70,9 @@ class ProductCategoryController extends Controller
     {
         $productCategory  =  $this->productCategoryService->edit($request->productCategoryId);
 
-        return response()->json([
-            "data"=>$productCategory
-        ],200);
+        return response()->json(
+            new ProductCategoryResource($productCategory)
+        ,200);
 
     }
 

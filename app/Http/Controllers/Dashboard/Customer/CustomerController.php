@@ -17,6 +17,7 @@ class CustomerController extends Controller
     protected $customerService;
     public function __construct(CustomerService $customerService)
     {
+        $this->middleware('auth:api');
        $this->customerService =$customerService;
     }
     public function index()

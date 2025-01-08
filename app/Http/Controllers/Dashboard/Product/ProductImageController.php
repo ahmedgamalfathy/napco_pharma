@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Services\Upload\UploadService;
 use App\Services\Product\ProductImageService;
+use App\Http\Resources\Product\ProductImage\ProductImageResource;
 
 class ProductImageController extends Controller
 {
@@ -14,7 +15,7 @@ class ProductImageController extends Controller
     protected $uploadService;
     public function __construct(UploadService $uploadService, ProductImageService $productImageService)
     {
-        // $this->middleware('auth:api');
+        $this->middleware('auth:api');
         $this->productImageService = $productImageService;
         $this->uploadService = $uploadService;
     }
@@ -23,7 +24,7 @@ class ProductImageController extends Controller
         $productImages = $this->productImageService->all($request->all());
 
         return response()->json([
-            "data"=>$productImages
+            "data"=> ProductImageResource::collection($productImages)
         ],200);
 
     }

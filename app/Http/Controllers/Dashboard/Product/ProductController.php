@@ -2,16 +2,18 @@
 
 namespace App\Http\Controllers\Dashboard\Product;
 
-use App\Http\Resources\Product\ProductResource;
 use Illuminate\Http\Request;
+use App\Utils\PaginateCollection;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Services\Upload\UploadService;
 use App\Services\Product\ProductService;
 use App\Services\Product\ProductImageService;
+use App\Http\Resources\Product\ProductResource;
 use App\Http\Resources\Product\AllProductResouce;
 use App\Http\Requests\Product\CreateProductRequest;
 use App\Http\Requests\Product\UpdateProductRequest;
+use App\Http\Resources\Product\AllProductCollection;
 
 class ProductController extends Controller
 {
@@ -23,21 +25,16 @@ class ProductController extends Controller
         $this->productService =$productService;
         $this->uploadService = $uploadService;
         $this->productImageService = $productImageService;
+        $this->middleware('auth:api');
     }
 
     public function index(Request $request)
     {
         $products = $this->productService->all();
 
-        return response()->json([
-          "data"=>$products,
-          'pagination' => [
-            'current_page' => $products->currentPage(),
-            'last_page' => $products->lastPage(),
-            'per_page' => $products->perPage(),
-            'total' => $products->total(),
-               ],
-        ], 200);
+        return response()->json(
+            new AllProductCollection(PaginateCollection::paginate($products, $request->pageSize?$request->pageSize:10))
+            );
 
     }
     public function create(CreateProductRequest $createProductRequest)
@@ -68,9 +65,9 @@ class ProductController extends Controller
     public function edit(Request $request)
     {
         $product =$this->productService->edit($request->productId);
-        return response()->json([
-         "data"=>$product
-        ],200);
+        return response()->json(
+            new ProductResource($product)
+            ,200);
     }
     public function update(UpdateProductRequest $updateProductRequest)
     {

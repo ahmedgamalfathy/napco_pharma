@@ -5,6 +5,8 @@ namespace App\Http\Resources\Product;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
+use function PHPUnit\Framework\isEmpty;
+
 class ProductResource extends JsonResource
 {
     /**
@@ -14,6 +16,7 @@ class ProductResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        // Extract translations for different locales
         $translations = $this->translations->mapWithKeys(function ($translation) {
             return [
                 'name' . ucfirst($translation->locale) => $translation->name ?? "",
@@ -41,4 +44,5 @@ class ProductResource extends JsonResource
             'metaDataAr' => isEmpty($translations['metaDataAr'])? [] : $translations['metaDataAr'],
         ];
     }
+
 }

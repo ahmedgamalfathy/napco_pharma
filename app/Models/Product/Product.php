@@ -3,10 +3,11 @@
 namespace App\Models\Product;
 
 use App\Enums\Product\ProductStatus;
-use Astrotomic\Translatable\Contracts\Translatable  as TranslatableContract;
+use App\Models\Product\ProductImage;
+use Illuminate\Database\Eloquent\Model;
 use Astrotomic\Translatable\Translatable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use Astrotomic\Translatable\Contracts\Translatable  as TranslatableContract;
 
 class Product extends Model implements TranslatableContract
 {
@@ -16,5 +17,9 @@ class Product extends Model implements TranslatableContract
     protected $casts =[
        'is_active'=>ProductStatus::class
     ];
-    
+    public function images()
+    {
+        return $this->hasMany(ProductImage::class);
+    }
+
 }

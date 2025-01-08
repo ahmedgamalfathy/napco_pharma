@@ -16,7 +16,7 @@ class ProductService{
                 AllowedFilter::custom('search', new ProductSearchTranslatableFilter()), // Add a custom search filter
             ])
             // ->with('images')
-            ->paginate();
+            ->get();
 
         return $products;
 

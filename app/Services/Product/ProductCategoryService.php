@@ -26,7 +26,7 @@ class ProductCategoryService{
             ->withTranslation() // Fetch translations if applicable
             ->allowedFilters([
                 AllowedFilter::custom('search', new ProductCategorySearchTranslatableFilter() ), // Add a custom search filter
-            ])->paginate();
+            ])->get();
 
         return $productCategorys;
 
