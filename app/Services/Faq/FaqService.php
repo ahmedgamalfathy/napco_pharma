@@ -13,7 +13,7 @@ class FaqService{
             ->withTranslation() // Fetch translations if applicable
             ->allowedFilters([
                 AllowedFilter::custom('search', new FaqSearchTranslatableFilter() ), // Add a custom search filter
-            ])->paginate();
+            ])->get();
 
         return $faqs;
 

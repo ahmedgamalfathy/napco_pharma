@@ -29,7 +29,7 @@ class UserService
         AllowedFilter::custom('role', new FilterUserRole()),
         AllowedFilter::exact('status'),
      ])
-     ->paginate();
+     ->get();
      return $users;
    }
    public function create(array $data)

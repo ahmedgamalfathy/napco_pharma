@@ -19,7 +19,7 @@ class CustomerService{
         $customers = QueryBuilder::for(Customer::class)
             ->allowedFilters([
                 AllowedFilter::custom('search', new FilterCustomer()), // Add a custom search filter
-            ])->paginate();
+            ])->get();
 
         return $customers;
 
