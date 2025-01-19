@@ -14,11 +14,13 @@ use App\Http\Controllers\API\Dashboard\Career\CandidateController;
 use App\Http\Controllers\API\Dashboard\Blog\BlogCategoryController;
 use App\Http\Controllers\API\Dashboard\Customer\CustomerController;
 use App\Http\Controllers\API\Dashboard\ContactUs\ContactUsController;
+use App\Http\Controllers\API\Dashboard\FrontPage\FrontPagecontroller;
 use App\Http\Controllers\API\Dashboard\Product\ProductImageController;
 use App\Http\Controllers\API\Dashboard\Newsletter\NewsletterController;
 use App\Http\Controllers\API\Dashboard\Newsletter\SubscriberController;
 use App\Http\Controllers\API\Dashboard\Product\ProductCategoryController;
 use App\Http\Controllers\API\Dashboard\ContactUs\ContactUsMessageController;
+use App\Http\Controllers\API\Dashboard\FrontPage\FrontPageSectionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -138,6 +140,20 @@ Route::prefix('v1/{lang}/admin/subscribers')->where(['lang' => 'en|ar'])->group(
 Route::prefix('v1/{lang}/admin/contact-us-messages')->where(['lang' => 'en|ar'])->group(function(){
     Route::post('create', [ContactUsMessageController::class, 'create']);
     Route::put('read-message', [ContactUsMessageController::class, 'read']);
+});
+Route::prefix('v1/{lang}/admin/front-pages')->where(['lang' => 'en|ar'])->group(function(){
+    Route::get('', [FrontPagecontroller::class, 'index']);
+    Route::post('create', [FrontPagecontroller::class, 'create']);
+    Route::get('edit', [FrontPagecontroller::class, 'edit']);
+    Route::put('update', [FrontPagecontroller::class, 'update']);
+    Route::delete('delete', [FrontPagecontroller::class, 'delete']);
+});
+Route::prefix('v1/{lang}/admin/front-page-sections')->where(['lang' => 'en|ar'])->group(function(){
+    Route::get('', [FrontPageSectionController::class, 'index']);
+    Route::post('create', [FrontPageSectionController::class, 'create']);
+    Route::get('edit', [FrontPageSectionController::class, 'edit']);
+    Route::put('update', [FrontPageSectionController::class, 'update']);
+    Route::delete('delete', [FrontPageSectionController::class, 'delete']);
 });
 Route::prefix('v1/{lang}/admin/selects')->where(['lang' => 'en|ar'])->group(function(){
     Route::get('', [SelectController::class, 'getSelects']);
